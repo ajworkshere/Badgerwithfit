@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Registry — Priority Access | THE BADGER CO.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--blk:#000;--wht:#fff;--rule:rgba(255,255,255,.1);--muted:rgba(255,255,255,.45);--dim:rgba(255,255,255,.18)}
+html{scroll-behavior:smooth}
+body{background:var(--blk);color:var(--wht);font-family:'Inter',sans-serif;overflow-x:hidden}
+.serif{font-family:'Playfair Display',serif}
+.mono{font-family:'IBM Plex Mono',monospace}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;border-bottom:.5px solid var(--rule);background:rgba(0,0,0,.94);backdrop-filter:blur(8px)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:11px;letter-spacing:.45em;text-transform:uppercase;color:var(--wht);text-decoration:none}
+.nav-links{display:flex;gap:2.5rem;align-items:center}
+.nav-link{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.45);text-decoration:none;position:relative;transition:color .2s}
+.nav-link:hover{color:var(--wht)}
+.nav-link::after{content:'';position:absolute;width:0;height:.5px;bottom:-3px;left:0;background:var(--wht);transition:width .3s}
+.nav-link:hover::after{width:100%}
+.nav-cta{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--blk);background:var(--wht);padding:.55rem 1.4rem;text-decoration:none;transition:background .2s,color .2s}
+.nav-cta:hover{background:transparent;color:var(--wht);outline:.5px solid var(--wht)}
+.nav-cta.active{background:transparent;color:var(--wht);outline:.5px solid var(--wht)}
+
+/* PAGE HEADER */
+.page-header{padding:10rem 2.5rem 5rem;border-bottom:.5px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end}
+.ph-left{}
+.ph-right{padding-left:2.5rem;border-left:.5px solid var(--rule)}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(38px,6vw,74px);font-weight:900;line-height:.88;letter-spacing:-.02em}
+.page-title em{font-style:italic;color:rgba(255,255,255,.5);display:block}
+.page-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);border-left:.5px solid var(--wht);padding-left:1rem;line-height:1.9;margin-top:2.5rem}
+.intro-copy{font-size:13px;color:rgba(255,255,255,.55);line-height:2.2;margin-bottom:2.5rem}
+.position-badge{display:inline-flex;align-items:center;gap:.75rem;border:.5px solid var(--rule);padding:.75rem 1.25rem}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--wht);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.badge-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+
+/* FORM SECTION */
+.form-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:.5px solid var(--rule)}
+.form-left{padding:4rem 2.5rem;border-right:.5px solid var(--rule)}
+.form-right{padding:4rem 2.5rem;display:flex;flex-direction:column;justify-content:space-between}
+
+/* FORM FIELDS */
+.field-group{margin-bottom:0}
+.field{border-bottom:.5px solid var(--rule);padding:1.75rem 0;position:relative}
+.field:first-child{border-top:.5px solid var(--rule)}
+.field-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-bottom:.85rem;display:block}
+.field-input{width:100%;background:transparent;border:none;outline:none;font-family:'Playfair Display',serif;font-size:clamp(16px,2vw,22px);font-weight:700;color:var(--wht);letter-spacing:-.01em;padding:0;caret-color:var(--wht)}
+.field-input::placeholder{color:rgba(255,255,255,.18);font-weight:400;font-style:italic}
+.field-input:-webkit-autofill{-webkit-box-shadow:0 0 0 100px #000 inset;-webkit-text-fill-color:#fff}
+.field-select{width:100%;background:transparent;border:none;outline:none;font-family:'Playfair Display',serif;font-size:clamp(16px,2vw,22px);font-weight:700;color:var(--wht);appearance:none;cursor:pointer;padding:0}
+.field-select option{background:#111;color:var(--wht);font-family:'Inter',sans-serif;font-size:14px}
+.field-arrow{position:absolute;right:0;bottom:2.25rem;font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.1em;pointer-events:none}
+.field-hint{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);letter-spacing:.12em;margin-top:.5rem}
+
+/* RADIO SECTION */
+.radio-section{margin-top:0}
+.radio-header{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.32);padding:1.75rem 0 1.25rem;border-bottom:.5px solid var(--rule)}
+.radio-options{display:flex;flex-direction:column;gap:0}
+.radio-opt{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0;border-bottom:.5px solid var(--rule);cursor:pointer;transition:background .15s;position:relative}
+.radio-opt:last-child{border-bottom:none}
+.radio-opt:hover .radio-label{color:var(--wht)}
+.radio-opt input[type="radio"]{position:absolute;opacity:0;width:0;height:0}
+.radio-label{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:rgba(255,255,255,.5);transition:color .2s;cursor:pointer}
+.radio-sub{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.25);letter-spacing:.12em}
+.radio-indicator{width:10px;height:10px;border:.5px solid rgba(255,255,255,.25);border-radius:50%;transition:background .2s,border-color .2s;flex-shrink:0}
+.radio-opt input[type="radio"]:checked ~ .radio-label{color:var(--wht)}
+.radio-opt.selected .radio-indicator{background:var(--wht);border-color:var(--wht)}
+.radio-opt.selected .radio-label{color:var(--wht)}
+
+/* SUBMIT */
+.submit-wrap{margin-top:2.5rem}
+.submit-btn{width:100%;background:var(--wht);border:.5px solid var(--wht);color:var(--blk);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.35em;text-transform:uppercase;padding:1.25rem 2rem;cursor:pointer;transition:background .25s,color .25s;display:flex;justify-content:space-between;align-items:center}
+.submit-btn:hover{background:transparent;color:var(--wht)}
+.submit-arrow{font-size:14px;transition:transform .2s}
+.submit-btn:hover .submit-arrow{transform:translateX(4px)}
+.submit-note{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.22);letter-spacing:.12em;margin-top:1rem;line-height:1.7}
+
+/* RIGHT PANEL */
+.spec-block{border:.5px solid var(--rule)}
+.spec-row{display:flex;justify-content:space-between;align-items:baseline;padding:1rem 1.25rem;border-bottom:.5px solid var(--rule)}
+.spec-row:last-child{border-bottom:none}
+.spec-k{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase}
+.spec-v{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--wht)}
+
+.contact-block{border:.5px solid var(--rule);padding:1.5rem}
+.contact-label{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.35em;text-transform:uppercase;margin-bottom:.75rem}
+.contact-val{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--wht)}
+.contact-val a{color:var(--wht);text-decoration:none;transition:opacity .2s}
+.contact-val a:hover{opacity:.6}
+
+.manifesto-quote{border-left:.5px solid var(--wht);padding-left:1.5rem}
+.mq-text{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;line-height:1.75;color:var(--wht);margin-bottom:.75rem}
+.mq-attr{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.15em}
+
+/* SUCCESS STATE */
+.success-overlay{display:none;padding:4rem 2.5rem;border-bottom:.5px solid var(--rule)}
+.success-overlay.show{display:block}
+.success-sku{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.35em;margin-bottom:1.5rem}
+.success-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:900;line-height:1;margin-bottom:1.5rem}
+.success-body{font-size:12px;color:var(--muted);line-height:2.1;max-width:480px;margin-bottom:2.5rem}
+.success-dna{display:inline-flex;align-items:center;gap:1rem;border:.5px solid var(--rule);padding:.75rem 1.25rem}
+.success-dna-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.2em;text-transform:uppercase}
+.success-dna-val{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--wht)}
+
+/* FOOTER */
+footer{padding:2rem 2.5rem;display:flex;justify-content:space-between;align-items:center;border-top:.5px solid var(--rule)}
+.ft-logo{font-family:'Playfair Display',serif;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
+.ft-links{display:flex;gap:2rem}
+.ft-link{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.22);text-decoration:none;transition:color .2s}
+.ft-link:hover{color:var(--wht)}
+.ft-copy{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.1em}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 768px) {
+  nav { padding: 1rem; flex-direction: column; gap: 1rem; position: relative; height: auto; }
+  .nav-links { gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
+  .sec { padding: 3rem 1.5rem; }
+  .registry-form-wrap { max-width: 100% !important; flex-direction: column; }
+  footer { flex-direction: column; gap: 2.5rem; text-align: center; }
+  .ft-links { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo serif">The Badger Co.</a>
+  <div class="nav-links">
+    <a href="science.html" class="nav-link mono">The Vault</a>
+    <a href="fit-app.html" class="nav-link mono">Badger Fit App</a>
+    <a href="collections.html" class="nav-link mono">Collections</a>
+    <a href="impact.html" class="nav-link mono">Impact</a>
+    <a href="registry.html" class="nav-cta active mono">The Registry</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="ph-left">
+    <div class="tag" style="margin-bottom:1.25rem">Priority Access — B8-C09 Production Run</div>
+    <h1 class="page-title serif">THE<br>REGISTRY.<br><em>Securing<br>Your Gait.</em></h1>
+    <p class="page-sub mono">July 2026 Launch — Limited Production</p>
+  </div>
+  <div class="ph-right">
+    <p class="intro-copy">Entry into the Registry ensures priority access to the B8-C09 production run and direct correspondence with our engineering team. This is not a newsletter. It is a precision queue — ordered by Bha Cluster, not by chance.</p>
+    <div style="display:flex;flex-direction:column;gap:.75rem">
+      <div class="position-badge">
+        <div class="badge-dot"></div>
+        <span class="badge-label mono">Registry — Open for Intake</span>
+      </div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;border:.5px solid rgba(255,255,255,.18);padding:.4rem .9rem;color:rgba(255,255,255,.4)">B8-C09 Production Run</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;border:.5px solid rgba(255,255,255,.18);padding:.4rem .9rem;color:rgba(255,255,255,.4)">BHA Standards Certified</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;border:.5px solid rgba(255,255,255,.18);padding:.4rem .9rem;color:rgba(255,255,255,.4)">Designed in India</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- FORM SECTION -->
+<div id="formSection">
+<div class="form-wrap">
+  <div class="form-left">
+    <div class="tag" style="margin-bottom:2rem">Your Details — Laboratory Intake</div>
+
+    <div class="field-group">
+      <!-- FULL NAME -->
+      <div class="field">
+        <label class="field-label mono" for="fname">Full Name</label>
+        <input class="field-input serif" type="text" id="fname" name="fname" placeholder="As it should appear on your Registry entry" value="AJ" autocomplete="off">
+      </div>
+
+      <!-- PROFESSIONAL INDUSTRY -->
+      <div class="field" style="position:relative">
+        <label class="field-label mono" for="industry">Professional Industry</label>
+        <select class="field-input field-select serif" id="industry" name="industry">
+          <option value="" disabled selected style="color:rgba(255,255,255,.18);font-style:italic">Select your industry</option>
+          <option value="entrepreneurship">Entrepreneurship / Founding</option>
+          <option value="law">Law / Legal Practice</option>
+          <option value="finance">Finance / Banking</option>
+          <option value="medicine">Medicine / Healthcare</option>
+          <option value="architecture">Architecture / Design</option>
+          <option value="technology">Technology / Engineering</option>
+          <option value="academia">Academia / Research</option>
+          <option value="government">Government / Policy</option>
+          <option value="creative">Creative / Cultural Industries</option>
+          <option value="other">Other Discipline</option>
+        </select>
+        <span class="field-arrow mono">↓</span>
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="field">
+        <label class="field-label mono" for="phone">Phone — WhatsApp</label>
+        <input class="field-input serif" type="tel" id="phone" name="phone" placeholder="+91 — for engineering team correspondence" autocomplete="off">
+        <p class="field-hint mono">Used solely for fit consultation. No promotional messages.</p>
+      </div>
+
+      <!-- EMAIL -->
+      <div class="field">
+        <label class="field-label mono" for="email">Email Address</label>
+        <input class="field-input serif" type="email" id="email" name="email" placeholder="aj@thebadgerco.in" autocomplete="off">
+      </div>
+    </div>
+
+    <!-- GAIT EXPERIENCE -->
+    <div class="radio-section">
+      <div class="radio-header mono">Current Gait Experience — Select One</div>
+      <div class="radio-options">
+        <label class="radio-opt" id="ro1" onclick="selectRadio('ro1','gait','high-arch')">
+          <input type="radio" name="gait" value="high-arch">
+          <div>
+            <div class="radio-label serif">High Arch</div>
+            <div class="radio-sub mono">Elevated medial arch — forefoot overpronation common</div>
+          </div>
+          <div class="radio-indicator"></div>
+        </label>
+        <label class="radio-opt" id="ro2" onclick="selectRadio('ro2','gait','wide-forefoot')">
+          <input type="radio" name="gait" value="wide-forefoot">
+          <div>
+            <div class="radio-label serif">Wide Forefoot</div>
+            <div class="radio-sub mono">Broader metatarsal spread — standard lasts cause compression</div>
+          </div>
+          <div class="radio-indicator"></div>
+        </label>
+        <label class="radio-opt" id="ro3" onclick="selectRadio('ro3','gait','standard')">
+          <input type="radio" name="gait" value="standard">
+          <div>
+            <div class="radio-label serif">Standard</div>
+            <div class="radio-sub mono">Neutral gait — Bha Cluster will refine beyond 'standard'</div>
+          </div>
+          <div class="radio-indicator"></div>
+        </label>
+      </div>
+    </div>
+
+    <div class="submit-wrap">
+      <button class="submit-btn mono" onclick="submitRegistry()">
+        <span>Secure My Position in the Registry</span>
+        <span class="submit-arrow">→</span>
+      </button>
+      <p class="submit-note mono">By entering the Registry you consent to one-to-one correspondence from The Badger Co. engineering team. No bulk communications. No data sharing. Ever.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="form-right">
+    <div>
+      <div class="tag" style="margin-bottom:1.5rem">What Registry Entry Includes</div>
+      <div class="spec-block" style="margin-bottom:2.5rem">
+        <div class="spec-row"><span class="spec-k mono">Production Priority</span><span class="spec-v mono">Position 001–120</span></div>
+        <div class="spec-row"><span class="spec-k mono">Fit Consultation</span><span class="spec-v mono">1-to-1 Engineering Team</span></div>
+        <div class="spec-row"><span class="spec-k mono">Bha Cluster Assignment</span><span class="spec-v mono">B8-C09 / Personalised</span></div>
+        <div class="spec-row"><span class="spec-k mono">Launch Access</span><span class="spec-v mono">July 2026 — Pre-market</span></div>
+        <div class="spec-row"><span class="spec-k mono">Correspondence</span><span class="spec-v mono">Direct — No Intermediary</span></div>
+        <div class="spec-row"><span class="spec-k mono">Production Run Size</span><span class="spec-v mono">Limited — 120 Units</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:2rem">
+      <div class="manifesto-quote">
+        <p class="mq-text serif">"We aren't selling to the masses. We already have a Registry of high-intent professionals who have pre-identified their BHA Clusters. Our production is as precise as our data."</p>
+        <p class="mq-attr mono">— AJ, Founder, The Badger Co.</p>
+      </div>
+
+      <div>
+        <div class="tag" style="margin-bottom:1.25rem">Direct Contact</div>
+        <div class="contact-block" style="margin-bottom:1px">
+          <div class="contact-label mono">Engineering & Registry Enquiries</div>
+          <div class="contact-val serif"><a href="mailto:aj@thebadgerco.in">aj@thebadgerco.in</a></div>
+        </div>
+        <div class="contact-block" style="border-top:none">
+          <div class="contact-label mono">Brand Correspondence</div>
+          <div class="contact-val serif"><a href="mailto:aj@thebadgerco.in">aj@thebadgerco.in</a></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="tag" style="margin-bottom:1rem">Registry Status</div>
+        <div style="border:.5px solid var(--rule);padding:1.25rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+            <span class="mono" style="font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.15em">Positions Remaining</span>
+            <span class="serif" style="font-size:22px;font-weight:900" id="posCounter">120</span>
+          </div>
+          <div style="width:100%;height:.5px;background:rgba(255,255,255,.08)">
+            <div id="posBar" style="height:.5px;background:var(--wht);width:100%;transition:width 1.5s ease"></div>
+          </div>
+          <p class="mono" style="font-size:8px;color:rgba(255,255,255,.22);letter-spacing:.1em;margin-top:.75rem">B8-C09 Production Run — July 2026</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SUCCESS STATE -->
+<div class="success-overlay" id="successState">
+  <div class="success-sku mono">Registry Entry Confirmed — <span id="successName">AJ</span></div>
+  <h2 class="success-title serif">Position Secured.<br><em style="color:rgba(255,255,255,.5);font-style:italic">Your Gait,<br>Your Standard.</em></h2>
+  <p class="success-body">You are now in the B8-C09 production queue. A member of our engineering team will correspond with you directly at <span id="successEmail" style="font-family:'IBM Plex Mono',monospace;color:var(--wht)">—</span> within 48 hours to begin your Bha Cluster consultation. No mass emails. One conversation.</p>
+  <div style="display:flex;gap:1px;flex-wrap:wrap">
+    <div class="success-dna"><span class="success-dna-label mono">Assigned Cluster</span><span class="success-dna-val mono">B8-C09</span></div>
+    <div class="success-dna" style="margin-left:1px"><span class="success-dna-label mono">Gait Profile</span><span class="success-dna-val mono" id="successGait">—</span></div>
+    <div class="success-dna" style="margin-left:1px"><span class="success-dna-label mono">Registry Status</span><span class="success-dna-val mono">CONFIRMED ✓</span></div>
+  </div>
+  <div style="margin-top:2.5rem;border-top:.5px solid var(--rule);padding-top:2rem">
+    <a href="fit-app.html" style="display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;border:.5px solid var(--wht);padding:1rem 2.5rem;color:var(--wht);text-decoration:none;transition:background .2s,color .2s" onmouseover="this.style.background='#fff';this.style.color='#000'" onmouseout="this.style.background='transparent';this.style.color='#fff'">Run Fit Analysis — B8-C09 →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="ft-logo serif">The Badger Co.</div>
+  <div class="ft-links">
+    <a href="index.html" class="ft-link mono">Home</a>
+    <a href="science.html" class="ft-link mono">The Vault</a>
+    <a href="fit-app.html" class="ft-link mono">Badger Fit App</a>
+    <a href="collections.html" class="ft-link mono">Collections</a>
+    <a href="impact.html" class="ft-link mono">Impact</a>
+  </div>
+  <div class="ft-copy mono">aj@thebadgerco.in — DESIGNED IN INDIA // BHA STANDARDS // © 2026</div>
+</footer>
+
+<script>
+function selectRadio(id,name,val){
+  document.querySelectorAll('.radio-opt').forEach(function(el){el.classList.remove('selected')});
+  document.getElementById(id).classList.add('selected');
+  var inp=document.querySelector('input[name="'+name+'"][value="'+val+'"]');
+  if(inp)inp.checked=true;
+}
+
+// Simulate positions filling
+(function(){
+  var count=120,bar=document.getElementById('posBar'),ctr=document.getElementById('posCounter');
+  setTimeout(function(){
+    var fill=Math.floor(Math.random()*18)+8;
+    var target=count-fill;
+    if(bar)bar.style.width=(target/count*100)+'%';
+    if(ctr)ctr.textContent=target;
+  },1200);
+})();
+
+function submitRegistry(){
+  var name=document.getElementById('fname').value.trim();
+  var email=document.getElementById('email').value.trim();
+  var gaitEl=document.querySelector('input[name="gait"]:checked');
+  var gaitMap={'high-arch':'High Arch','wide-forefoot':'Wide Forefoot','standard':'Standard'};
+
+  if(!name){document.getElementById('fname').focus();return;}
+  if(!email||email.indexOf('@')===-1){document.getElementById('email').focus();return;}
+
+  // Populate success
+  document.getElementById('successName').textContent=name;
+  document.getElementById('successEmail').textContent=email;
+  document.getElementById('successGait').textContent=gaitEl?gaitMap[gaitEl.value]:'To be assessed';
+
+  // Update counter
+  var ctr=document.getElementById('posCounter');
+  var bar=document.getElementById('posBar');
+  var cur=parseInt(ctr.textContent)||120;
+  if(cur>1){
+    ctr.textContent=cur-1;
+    if(bar)bar.style.width=((cur-1)/120*100)+'%';
+  }
+
+  // Transition
+  document.getElementById('formSection').style.display='none';
+  var s=document.getElementById('successState');
+  s.classList.add('show');
+  s.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE BADGER CO. — Resilient Luxury Footwear</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--blk:#000;--wht:#fff;--rule:rgba(255,255,255,.1);--muted:rgba(255,255,255,.45);--dim:rgba(255,255,255,.2)}
+html{scroll-behavior:smooth}
+body{background:var(--blk);color:var(--wht);font-family:'Inter',sans-serif;overflow-x:hidden}
+.serif{font-family:'Playfair Display',serif}
+.mono{font-family:'IBM Plex Mono',monospace}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;border-bottom:.5px solid var(--rule);background:rgba(0,0,0,.92);backdrop-filter:blur(8px)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:11px;letter-spacing:.45em;text-transform:uppercase;color:var(--wht);text-decoration:none}
+.nav-links{display:flex;gap:2.5rem;align-items:center}
+.nav-link{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-decoration:none;position:relative;transition:color .2s}
+.nav-link:hover{color:var(--wht)}
+.nav-link::after{content:'';position:absolute;width:0;height:.5px;bottom:-3px;left:0;background:var(--wht);transition:width .3s ease}
+.nav-link:hover::after{width:100%}
+.nav-cta{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--blk);background:var(--wht);padding:.55rem 1.4rem;text-decoration:none;transition:background .2s,color .2s}
+.nav-cta:hover{background:transparent;color:var(--wht);outline:.5px solid var(--wht)}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;border-bottom:.5px solid var(--rule);padding-top:72px}
+.hero-l{padding:6rem 2.5rem 4rem;border-right:.5px solid var(--rule);display:flex;flex-direction:column;justify-content:flex-end}
+.hero-r{padding:6rem 2.5rem 4rem;display:flex;flex-direction:column;justify-content:space-between}
+.hero-idx{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.35em;margin-bottom:5rem;opacity:0;transform:translateY(10px);transition:opacity .8s ease,transform .8s ease}
+.hero-idx.vis{opacity:1;transform:none}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(48px,7vw,86px);font-weight:900;line-height:.88;letter-spacing:-.02em;opacity:0;transform:translateY(20px);transition:opacity 1s ease .2s,transform 1s ease .2s}
+.hero-title.vis{opacity:1;transform:none}
+.hero-title em{font-style:italic;font-weight:400;color:rgba(255,255,255,.55)}
+.hero-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);border-left:.5px solid var(--wht);padding-left:1rem;line-height:1.9;opacity:0;transform:translateY(10px);transition:opacity .8s ease .4s,transform .8s ease .4s}
+.hero-sub.vis{opacity:1;transform:none}
+.hero-cta{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;border:.5px solid var(--wht);padding:1rem 2rem;color:var(--wht);text-decoration:none;transition:background .2s,color .2s;margin-top:2.5rem;opacity:0;transition:opacity .8s ease .6s,background .2s,color .2s}
+.hero-cta.vis{opacity:1}
+.hero-cta:hover{background:var(--wht);color:var(--blk)}
+.hero-geo{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.15em;margin-top:auto;padding-top:3rem}
+.badger-wrap{flex:1;display:flex;align-items:center;justify-content:center}
+
+/* SECTION SHARED */
+.sec{padding:5rem 2.5rem;border-bottom:.5px solid var(--rule)}
+.sec-hd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3.5rem}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(26px,3.8vw,42px);font-weight:900;line-height:1;max-width:420px}
+.sec-n{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.22);letter-spacing:.3em}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.ca{padding-right:2.5rem}
+.cb{padding-left:2.5rem;border-left:.5px solid var(--rule)}
+.pull{font-family:'Playfair Display',serif;font-size:clamp(15px,2.2vw,20px);font-style:italic;line-height:1.55;margin-bottom:1.5rem}
+.pull s{color:rgba(255,255,255,.32);text-decoration-color:rgba(255,255,255,.2)}
+.body-copy{font-size:12px;color:var(--muted);line-height:2.2}
+.chip{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.25em;text-transform:uppercase;border:.5px solid rgba(255,255,255,.18);padding:.35rem .85rem;color:rgba(255,255,255,.45);margin-bottom:1.5rem}
+
+/* TENETS */
+.tenets{display:flex;flex-direction:column;gap:0;border:.5px solid var(--rule);margin-top:3rem}
+.tenet{display:flex;align-items:flex-start;gap:1.5rem;padding:1.25rem 1.5rem;border-bottom:.5px solid var(--rule)}
+.tenet:last-child{border-bottom:none}
+.tenet-n{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.3em;min-width:28px;padding-top:2px}
+.tenet-title{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;margin-bottom:.3rem}
+.tenet-body{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.38);line-height:1.8}
+
+/* FOOTER */
+footer{padding:2rem 2.5rem;display:flex;justify-content:space-between;align-items:center;border-top:.5px solid var(--rule)}
+.ft-logo{font-family:'Playfair Display',serif;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
+.ft-links{display:flex;gap:2rem}
+.ft-link{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.22);text-decoration:none;transition:color .2s}
+.ft-link:hover{color:var(--wht)}
+.ft-copy{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.1em}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s ease}
+.reveal.vis{opacity:1;transform:none}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 768px) {
+  nav { padding: 1rem; flex-direction: column; gap: 1rem; position: relative; height: auto; }
+  .nav-links { gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
+  .sec { padding: 4rem 1.5rem; }
+  .sec-hd { flex-direction: column; gap: 1rem; align-items: flex-start; }
+  .sec-n { align-self: flex-end; }
+  .two { grid-template-columns: 1fr; display: flex; flex-direction: column; gap: 3rem; }
+  .hero-title { font-size: 60px !important; line-height: 0.9; }
+  .hero-sub { font-size: 11px; }
+  .hero-content { align-items: center; text-align: center; }
+  .badger-wrap { margin: 2rem 0; width: 100%; }
+  footer { flex-direction: column; gap: 2.5rem; text-align: center; padding: 4rem 1.5rem; }
+  .ft-links { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo serif">The Badger Co.</a>
+  <div class="nav-links">
+    <a href="science.html" class="nav-link mono">The Vault</a>
+    <a href="fit-app.html" class="nav-link mono">Badger Fit App</a>
+    <a href="collections.html" class="nav-link mono">Collections</a>
+    <a href="impact.html" class="nav-link mono">Impact</a>
+    <a href="registry.html" class="nav-cta mono">The Registry</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-l">
+    <div class="hero-idx mono" id="hidx">01 — The Origin // BHA Standards SS-2026</div>
+    <h1 class="hero-title serif" id="htitle">THE ART<br>OF <em>PERSIS-<br>TENCE.</em></h1>
+  </div>
+  <div class="hero-r">
+    <p class="hero-sub mono" id="hsub">Engineering the future of footwear<br>for the entrepreneur and activist.<br>Tested for the 14-Hour Day.</p>
+    <a href="collections.html" class="hero-cta mono" id="hcta">Explore Collection →</a>
+    <p class="hero-geo mono">DESIGNED IN INDIA // BHA STANDARDS</p>
+  </div>
+</section>
+
+<!-- BEYOND THE JUDGMENT -->
+<section class="sec reveal" id="s2">
+  <div class="sec-hd">
+    <div><div class="tag" style="margin-bottom:.7rem">02 — The Problem</div><h2 class="sec-title serif">Beyond the Judgment.</h2></div>
+    <div class="sec-n mono">02 / 04</div>
+  </div>
+  <div class="two">
+    <div class="ca">
+      <div class="chip mono">The Shopkeeper Conflict</div>
+      <p class="pull serif">"Offline shopping comes with unsolicited judgment. <s>Shopkeepers shouldn't comment on your foot shape.</s>"</p>
+      <p class="body-copy">We've eliminated the awkward store interaction entirely. Standard sizes are built on foreign lasts — designed for foreign bodies. The Indian foot has been treated as an anomaly in a market it should own. That ends here.</p>
+    </div>
+    <div class="cb">
+      <div style="height:2.5rem"></div>
+      <p class="pull serif" style="font-size:clamp(13px,2vw,17px)">"We built a system that <em>respects the diversity</em> of the Indian foot."</p>
+      <p class="body-copy" style="margin-bottom:1.5rem">1.4 billion people. One sizing system — imported. The Badger Co. starts from a different premise: that Indian foot geometry is the standard, not the exception. Every last, every cluster, every data point was derived from Indian feet.</p>
+      <a href="fit-app.html" class="chip mono" style="text-decoration:none;cursor:pointer;display:inline-block;padding:.45rem 1rem">Find Your Geometry →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TENETS -->
+<section class="sec reveal" id="s3">
+  <div class="sec-hd">
+    <div><div class="tag" style="margin-bottom:.7rem">03 — The Principles</div><h2 class="sec-title serif">Architectural Integrity.</h2></div>
+    <div class="sec-n mono">03 / 04</div>
+  </div>
+  <div class="two">
+    <div class="ca">
+      <p class="body-copy">Your footwear should be as resilient as your vision. Engineered with a technical welt, high-density upper materials, and a Bha-calibrated last for a lifetime of performance.</p>
+      <a href="science.html" class="chip mono" style="text-decoration:none;cursor:pointer;display:inline-block;margin-top:1.5rem;padding:.45rem 1rem">Read the Science →</a>
+    </div>
+    <div class="cb">
+      <div class="tenets">
+        <div class="tenet">
+          <div class="tenet-n mono">01</div>
+          <div><div class="tenet-title serif">Ethical Procurement</div><div class="tenet-body mono">Full supply-chain transparency from artisan workshop to dispatch.</div></div>
+        </div>
+        <div class="tenet">
+          <div class="tenet-n mono">02</div>
+          <div><div class="tenet-title serif">Anatomical Engineering</div><div class="tenet-body mono">Bha Cluster last geometry derived from 100,000 Indian foot scans.</div></div>
+        </div>
+        <div class="tenet">
+          <div class="tenet-n mono">03</div>
+          <div><div class="tenet-title serif">Social Impact Model</div><div class="tenet-body mono">Above-market wages. Craft employment. Atmanirbhar Bharat.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSTRUCTION DETAILS -->
+<section class="sec reveal" style="padding-top:0">
+  <div style="border:.5px solid var(--rule); padding:2.5rem; background:rgba(255,255,255,0.01)">
+    <div class="tag" style="margin-bottom:1.5rem; text-align:center">Bha Construction Details — Mechanical Close-up</div>
+    <img src="DETAILS.webp" alt="Bha Construction Details" style="width:100%; height:auto; display:block; filter: brightness(0.9) contrast(1.1);">
+  </div>
+</section>
+
+<!-- ENGINEERING ARTIFACT -->
+<section class="sec reveal">
+  <div class="sec-hd">
+    <div><div class="tag" style="margin-bottom:.7rem">04 — The Blueprint</div><h2 class="sec-title serif">PNA Engineering Analysis.</h2></div>
+    <div class="sec-n mono">04 / 04</div>
+  </div>
+  <div style="border:.5px solid var(--rule); padding:2rem; background:rgba(255,255,255,0.015); position:relative; overflow:hidden;">
+    <div class="tag" style="margin-bottom:2rem; text-align:center">Ref: PNA-742 // Morphology Logic Engine</div>
+    <img src="PNA.webp" alt="PNA Engineering Analysis" style="width:100%; height:auto; display:block; filter: brightness(0.85) contrast(1.15);">
+    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.3) 100%); pointer-events:none"></div>
+  </div>
+</section>
+
+<!-- REGISTRY ANCHOR -->
+<section id="registry" class="sec" style="text-align:center;padding:5rem 2.5rem">
+  <div class="tag" style="margin-bottom:1rem;display:block">Launch Phase — July 2026</div>
+  <h2 class="serif" style="font-size:clamp(28px,5vw,54px);font-weight:900;line-height:1;margin-bottom:1.5rem">Join The Registry.</h2>
+  <p class="mono" style="font-size:10px;color:var(--muted);letter-spacing:.2em;text-transform:uppercase;margin-bottom:3rem">Priority access. Early fit consultation. No unsolicited opinions.</p>
+  <div style="display:flex;gap:0;max-width:420px;margin:0 auto;border:.5px solid rgba(255,255,255,.25)">
+    <input type="email" placeholder="YOUR EMAIL ADDRESS" style="flex:1;background:transparent;border:none;padding:.9rem 1.25rem;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--wht);outline:none" />
+    <button style="background:var(--wht);color:var(--blk);border:none;padding:.9rem 1.5rem;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer">Register</button>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-logo serif">The Badger Co.</div>
+  <div class="ft-links">
+    <a href="science.html" class="ft-link mono">The Vault</a>
+    <a href="fit-app.html" class="ft-link mono">Badger Fit App</a>
+    <a href="collections.html" class="ft-link mono">Collections</a>
+    <a href="impact.html" class="ft-link mono">Impact</a>
+  </div>
+  <div class="ft-copy mono">DESIGNED IN INDIA // BHA STANDARDS // © 2026</div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  ['hidx','htitle','hsub','hcta'].forEach(function(id,i){
+    var el=document.getElementById(id);
+    if(el)setTimeout(function(){el.classList.add('vis')},300+i*200);
+  });
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);}});
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+});
+</script>
+</body>
+</html>

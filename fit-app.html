@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Badger Fit App — Dignity in Data | THE BADGER CO.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--blk:#000;--wht:#fff;--rule:rgba(255,255,255,.1);--muted:rgba(255,255,255,.45)}
+html{scroll-behavior:smooth}
+body{background:var(--blk);color:var(--wht);font-family:'Inter',sans-serif;overflow-x:hidden}
+.serif{font-family:'Playfair Display',serif}
+.mono{font-family:'IBM Plex Mono',monospace}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;border-bottom:.5px solid var(--rule);background:rgba(0,0,0,.92);backdrop-filter:blur(8px)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:11px;letter-spacing:.45em;text-transform:uppercase;color:var(--wht);text-decoration:none}
+.nav-links{display:flex;gap:2.5rem;align-items:center}
+.nav-link{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.45);text-decoration:none;position:relative;transition:color .2s}
+.nav-link:hover,.nav-link.active{color:var(--wht)}
+.nav-link::after{content:'';position:absolute;width:0;height:.5px;bottom:-3px;left:0;background:var(--wht);transition:width .3s}
+.nav-link:hover::after,.nav-link.active::after{width:100%}
+.nav-cta{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--blk);background:var(--wht);padding:.55rem 1.4rem;text-decoration:none;transition:background .2s,color .2s}
+.nav-cta:hover{background:transparent;color:var(--wht);outline:.5px solid var(--wht)}
+
+.page-header{padding:9rem 2.5rem 4rem;border-bottom:.5px solid var(--rule)}
+.sec{padding:5rem 2.5rem;border-bottom:.5px solid var(--rule)}
+.body-copy{font-size:12px;color:var(--muted);line-height:2.2}
+
+/* WORKFLOW STEPS */
+.flow{display:grid;grid-template-columns:repeat(3,1fr);border:.5px solid var(--rule)}
+.fc{padding:2rem 1.5rem;border-right:.5px solid var(--rule);position:relative}
+.fc:last-child{border-right:none}
+.fn{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.22);letter-spacing:.3em;margin-bottom:1.25rem}
+.ft2{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:.75rem}
+.fs{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.38);line-height:1.9}
+.farr{position:absolute;right:-9px;top:calc(50% - 8px);font-size:10px;color:rgba(255,255,255,.2);font-family:'IBM Plex Mono',monospace;background:var(--blk);padding:2px 0;z-index:1}
+
+/* SCANNER UI */
+.scanner-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;border:.5px solid var(--rule)}
+.scanner-left{padding:2.5rem;border-right:.5px solid var(--rule)}
+.scanner-right{padding:2.5rem;display:flex;flex-direction:column;justify-content:space-between}
+
+/* SPIRIT LEVEL */
+.spirit-level{width:100%;height:40px;border:.5px solid var(--rule);position:relative;margin:1.5rem 0;overflow:hidden}
+.sl-bubble{width:28px;height:28px;border-radius:50%;border:.5px solid var(--wht);position:absolute;top:50%;transform:translateY(-50%);left:20%;transition:left 1s ease}
+.sl-track{position:absolute;top:50%;left:0;right:0;height:.5px;background:var(--rule);transform:translateY(-50%)}
+.sl-center{position:absolute;top:0;bottom:0;left:50%;transform:translateX(-50%);width:.5px;background:rgba(255,255,255,.3)}
+.sl-label{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.2em;text-align:center;margin-top:.5rem}
+
+/* YOLO GRID */
+.yolo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin:1.5rem 0}
+.yolo-cell{height:28px;background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
+.yolo-cell.active{border-color:rgba(255,255,255,.35)}
+.yolo-cell.active::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:scan .8s ease forwards}
+@keyframes scan{to{left:100%}}
+.yolo-lbl{font-family:'IBM Plex Mono',monospace;font-size:7px;color:rgba(255,255,255,.25);text-align:center;letter-spacing:.08em;padding-top:7px}
+
+/* SCAN PROGRESS */
+.scan-track{width:100%;height:.5px;background:rgba(255,255,255,.1);margin:1.25rem 0}
+.scan-fill{height:.5px;background:var(--wht);width:0;transition:width 4s linear}
+.scan-msg{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.38);letter-spacing:.12em;min-height:14px}
+
+/* RESULT */
+.result-panel{display:none;border:.5px solid var(--rule);margin-top:2rem}
+.result-header{display:flex;justify-content:space-between;align-items:baseline;padding:1.5rem 1.5rem;border-bottom:.5px solid var(--rule)}
+.dna-grid{display:grid;grid-template-columns:1fr 1fr}
+.dc{padding:.75rem 1rem;border-bottom:.5px solid rgba(255,255,255,.07);border-right:.5px solid rgba(255,255,255,.07)}
+.dc:nth-child(even){border-right:none}
+.dc:nth-last-child(-n+2){border-bottom:none}
+.dk{font-family:'IBM Plex Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.3rem}
+.dv{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--wht)}
+
+/* FORM */
+.measure-form{display:flex;flex-direction:column;gap:1rem}
+.mf-row{display:flex;align-items:center;gap:1rem;border-bottom:.5px solid var(--rule);padding-bottom:1rem}
+.mf-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.2em;text-transform:uppercase;min-width:120px}
+.mf-input{flex:1;background:transparent;border:none;border-bottom:.5px solid rgba(255,255,255,.2);padding:.5rem 0;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--wht);outline:none;text-align:right}
+.mf-unit{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.1em;min-width:20px}
+
+.btn{background:transparent;border:.5px solid var(--wht);color:var(--wht);font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;padding:1rem 2.5rem;cursor:pointer;transition:background .2s,color .2s;width:100%;margin-top:1.5rem}
+.btn:hover{background:var(--wht);color:var(--blk)}
+
+footer{padding:2rem 2.5rem;display:flex;justify-content:space-between;align-items:center;border-top:.5px solid var(--rule)}
+.ft-logo{font-family:'Playfair Display',serif;font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--muted)}
+.ft-links{display:flex;gap:2rem}
+.ft-link{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.22);text-decoration:none;transition:color .2s}
+.ft-link:hover{color:var(--wht)}
+.ft-copy{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.1em}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 768px) {
+  nav { padding: 1rem; flex-direction: column; gap: 1rem; position: relative; height: auto; }
+  .nav-links { gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
+  .sec { padding: 3rem 1.5rem; }
+  .page-header > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+  .flow { grid-template-columns: 1fr !important; gap: 3rem !important; }
+  .fc { border-right: none; border-bottom: .5px solid var(--rule); padding-bottom: 2rem; }
+  .fc:last-child { border-bottom: none; }
+  .scanner-wrap { grid-template-columns: 1fr !important; flex-direction: column; }
+  .scanner-left { border-right: none; border-bottom: .5px solid var(--rule); padding: 1.5rem; }
+  .sec > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; display: flex; flex-direction: column; }
+  footer { flex-direction: column; gap: 2.5rem; text-align: center; }
+  .ft-links { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo serif">The Badger Co.</a>
+  <div class="nav-links">
+    <a href="science.html" class="nav-link mono">The Vault</a>
+    <a href="fit-app.html" class="nav-link active mono">Badger Fit App</a>
+    <a href="collections.html" class="nav-link mono">Collections</a>
+    <a href="impact.html" class="nav-link mono">Impact</a>
+    <a href="registry.html" class="nav-cta mono">The Registry</a>
+  </div>
+</nav>
+
+<header class="page-header">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end">
+    <div>
+      <div class="tag" style="margin-bottom:1rem">The Judgment-Free Zone</div>
+      <h1 class="serif" style="font-size:clamp(40px,6vw,76px);font-weight:900;line-height:.9">BADGER<br><em style="color:rgba(255,255,255,.5)">FIT APP.</em></h1>
+    </div>
+    <div>
+      <p class="mono" style="font-size:10px;color:var(--muted);letter-spacing:.15em;border-left:.5px solid var(--wht);padding-left:1.25rem;line-height:2">"Whether your feet are wide, narrow, or unique — our app sees Geometry, not Problems."</p>
+      <a href="https://69eee3b65be421e85722b24a--chimerical-klepon-5fa849.netlify.app/" target="_blank" class="nav-cta mono" style="display:inline-block; margin-top:1.5rem; padding:1rem 2rem; font-size:11px; letter-spacing:0.3em; background:var(--wht); color:var(--blk); text-decoration:none;">Launch Full Experience →</a>
+    </div>
+  </div>
+</header>
+
+<!-- APP INTERFACE PREVIEW -->
+<section class="sec reveal" style="background:rgba(255,255,255,0.01)">
+  <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:center">
+    <div>
+      <div class="tag" style="margin-bottom:1rem">01 — The Interface</div>
+      <h2 class="serif" style="font-size:clamp(28px,4vw,42px);font-weight:900;line-height:1;margin-bottom:1.5rem">The Laboratory Interface.</h2>
+      <p class="body-copy">A minimalist, technical environment designed for the professional. No clutter. Just data. The interface reflects the precision of the BHA engineering standards — transforming your smartphone into a high-grade morphology scanner.</p>
+    </div>
+    <div class="mono" style="font-size:9px;color:rgba(255,255,255,0.22);letter-spacing:.3em">01 / 03</div>
+    
+    <!-- MOCKUP CONTAINER -->
+    <div style="display:flex;justify-content:center">
+      <div style="width:320px; height:580px; background:#000; border:1px solid rgba(255,255,255,0.15); border-radius:32px; padding:40px 24px; position:relative; box-shadow:0 40px 100px rgba(0,0,0,0.8); overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:space-between; text-align:center;">
+        
+        <!-- TOP LOGO -->
+        <div style="margin-top:40px">
+          <div style="width:80px; height:80px; border:0.5px solid rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative;">
+            <div style="width:60px; height:60px; border:0.5px solid rgba(255,255,255,0.1); border-radius:50%;"></div>
+            <div style="position:absolute; width:20px; height:10px; border:1.5px solid #fff; border-bottom:none; border-radius:20px 20px 0 0; top:30px"></div>
+            <div style="position:absolute; width:20px; height:10px; border:1.5px solid #fff; border-top:none; border-radius:0 0 20px 20px; bottom:30px"></div>
+          </div>
+        </div>
+
+        <!-- MAIN TEXT -->
+        <div>
+          <h3 class="serif" style="font-size:38px; font-weight:400; letter-spacing:0.02em; color:#fff; margin-bottom:8px">BADGER FIT</h3>
+          <div style="width:40px; height:0.5px; background:rgba(255,255,255,0.4); margin:12px auto"></div>
+          <p class="mono" style="font-size:9px; letter-spacing:0.4em; color:rgba(255,255,255,0.5); text-transform:uppercase">Laboratory Interface</p>
+          
+          <p style="font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6; margin-top:60px; padding:0 10px">Advanced morphology analysis engine for bespoke footwear engineering.</p>
+        </div>
+
+        <!-- BUTTON & FOOTER -->
+        <div style="width:100%; margin-bottom:20px">
+          <a href="https://69eee3b65be421e85722b24a--chimerical-klepon-5fa849.netlify.app/" target="_blank" style="display:block; width:100%; background:#E5E5E0; color:#000; padding:18px; text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:60px">Initialize Scan</a>
+          <p class="mono" style="font-size:8px; color:rgba(255,255,255,0.25); letter-spacing:0.15em">ENGINEERED IN INDIA • v2.4.0</p>
+        </div>
+
+        <!-- DECORATIVE LIGHT -->
+        <div style="position:absolute; top:-100px; left:50%; transform:translateX(-50%); width:300px; height:300px; background:radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%); pointer-events:none"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW -->
+<section class="sec" style="padding-bottom:0">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3.5rem">
+    <div><div class="tag" style="margin-bottom:.7rem">How It Works</div><h2 class="serif" style="font-size:clamp(22px,3vw,36px);font-weight:900;line-height:1">The Bha Fit System.</h2></div>
+    <div class="mono" style="font-size:9px;color:rgba(255,255,255,.22);letter-spacing:.3em">02 / 03</div>
+  </div>
+  <div class="flow">
+    <div class="fc">
+      <div class="fn mono">STEP 01</div>
+      <div class="ft2 serif">Precision Scan</div>
+      <p class="fs mono">Capture 3D foot geometry from home via smartphone. Spirit Level confirms flat placement. YOLOv8 detects key landmarks — no store visit, no human judgment.</p>
+      <div class="farr mono">→</div>
+    </div>
+    <div class="fc">
+      <div class="fn mono">STEP 02</div>
+      <div class="ft2 serif">Cluster Match</div>
+      <p class="fs mono">Bha Cluster algorithm cross-references 100,000 Indian foot profiles. Morphological index identification — zero human interpretation or bias in the matching chain.</p>
+      <div class="farr mono">→</div>
+    </div>
+    <div class="fc">
+      <div class="fn mono">STEP 03</div>
+      <div class="ft2 serif">Sanctuary Fit</div>
+      <p class="fs mono">Last geometry, E-TPU midsole configuration, and arch support calibrated to your exact Bha Cluster. Your specific morphology. No compromise.</p>
+    </div>
+  </div>
+  
+  <div style="margin-top:4rem; border:.5px solid var(--rule); padding:2.5rem; background:rgba(255,255,255,0.01)">
+    <div class="tag" style="margin-bottom:1.5rem">Bha Midsole Stack — Structural Assembly</div>
+    <img src="BHA section.webp" alt="Bha Midsole Stack — Structural Assembly" style="width:100%; height:auto; display:block; opacity:0.8; filter: contrast(1.1);">
+  </div>
+</section>
+
+<!-- SCANNER TOOL -->
+<section class="sec" style="padding-top:0">
+  <div style="padding-top:4.5rem;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3rem">
+    <div><div class="tag" style="margin-bottom:.7rem">Interactive Fit Tool</div><h2 class="serif" style="font-size:clamp(22px,3vw,36px);font-weight:900;line-height:1">Badger Fit Scanner.</h2></div>
+    <div class="mono" style="font-size:9px;color:rgba(255,255,255,.22);letter-spacing:.3em">03 / 03</div>
+  </div>
+  <div class="scanner-wrap">
+    <div class="scanner-left">
+      <div class="tag" style="margin-bottom:1.5rem">Step 1 — Spirit Level Calibration</div>
+      <div class="spirit-level" id="spiritLevel">
+        <div class="sl-track"></div>
+        <div class="sl-center"></div>
+        <div class="sl-bubble" id="slBubble"></div>
+      </div>
+      <p class="sl-label mono" id="slLabel">Place phone flat on foot — calibrating plane...</p>
+
+      <div class="tag" style="margin-bottom:1rem;margin-top:2rem">Step 2 — YOLOv8 Landmark Detection</div>
+      <div class="yolo-grid" id="yoloGrid">
+        <div class="yolo-cell"><div class="yolo-lbl mono">HEEL</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">ARCH</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">META</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">BALL</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">TOE-1</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">TOE-5</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">INSTEP</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">MID-L</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">MID-M</div></div>
+        <div class="yolo-cell"><div class="yolo-lbl mono">DORSAL</div></div>
+      </div>
+      <p class="scan-msg mono" id="scanMsg" style="margin-top:.5rem">—</p>
+
+      <div class="tag" style="margin-bottom:.75rem;margin-top:2rem">Step 3 — Bha Cluster Matching</div>
+      <div class="scan-track"><div class="scan-fill" id="scanFill"></div></div>
+      <p class="scan-msg mono" id="clusterMsg">Awaiting scan data...</p>
+    </div>
+
+    <div class="scanner-right">
+      <div>
+        <div class="tag" style="margin-bottom:1.5rem">Manual Measurement Entry</div>
+        <div class="measure-form">
+          <div class="mf-row"><span class="mf-label mono">Foot Length</span><input class="mf-input mono" type="number" placeholder="265" id="fLen"><span class="mf-unit mono">mm</span></div>
+          <div class="mf-row"><span class="mf-label mono">Forefoot Width</span><input class="mf-input mono" type="number" placeholder="95" id="fWidth"><span class="mf-unit mono">mm</span></div>
+          <div class="mf-row"><span class="mf-label mono">Arch Height</span><input class="mf-input mono" type="number" placeholder="14" id="fArch"><span class="mf-unit mono">mm</span></div>
+          <div class="mf-row"><span class="mf-label mono">Instep Girth</span><input class="mf-input mono" type="number" placeholder="230" id="fInstep"><span class="mf-unit mono">mm</span></div>
+        </div>
+        <button class="btn mono" onclick="runScan()">Initiate Cluster Analysis →</button>
+      </div>
+      <div class="result-panel" id="resultPanel">
+        <div class="result-header">
+          <div><div class="tag" style="margin-bottom:.5rem">Optimal Cluster Identified</div><div class="serif" style="font-size:26px;font-weight:900">SKU B8-C09</div></div>
+          <div style="text-align:right"><div class="mono" style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.2em">Confidence</div><div class="mono" style="font-size:20px">98.4%</div></div>
+        </div>
+        <div class="dna-grid">
+          <div class="dc"><div class="dk">Cluster ID</div><div class="dv">BHA-C09</div></div>
+          <div class="dc"><div class="dk">Last Width</div><div class="dv">E-Wide / 82mm</div></div>
+          <div class="dc"><div class="dk">Arch Profile</div><div class="dv">Medial+ / 14.2mm</div></div>
+          <div class="dc"><div class="dk">Toe Spring</div><div class="dv">18°</div></div>
+          <div class="dc"><div class="dk">E-TPU Layer</div><div class="dv">0.29 g/cm³</div></div>
+          <div class="dc"><div class="dk">Heel Stack</div><div class="dv">26mm</div></div>
+          <div class="dc"><div class="dk">Gait Class</div><div class="dv">Neutral+</div></div>
+          <div class="dc"><div class="dk">BHA Standard</div><div class="dv mono">CERTIFIED ✓</div></div>
+        </div>
+        <div style="padding:1.25rem 1.5rem;border-top:.5px solid var(--rule)">
+          <a href="collections.html" class="btn mono" style="display:block;text-align:center;text-decoration:none;padding:.85rem">View Your Match — Collections →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-logo serif">The Badger Co.</div>
+  <div class="ft-links">
+    <a href="index.html" class="ft-link mono">Home</a>
+    <a href="science.html" class="ft-link mono">The Vault</a>
+    <a href="collections.html" class="ft-link mono">Collections</a>
+    <a href="impact.html" class="ft-link mono">Impact</a>
+  </div>
+  <div class="ft-copy mono">DESIGNED IN INDIA // BHA STANDARDS // © 2026</div>
+</footer>
+
+<script>
+var scanning=false;
+var clusterMsgs=['Cross-referencing morphological index...','Mapping 100,000 foot profiles...','Evaluating Bha Cluster candidates...','Validating E-TPU configuration...','Confirming medial arch parameters...','B8-C09 — match confirmed.'];
+var yoloSeq=['HEEL','ARCH','META','BALL','TOE-1','TOE-5','INSTEP','MID-L','MID-M','DORSAL'];
+
+function runScan(){
+  if(scanning)return;scanning=true;
+  document.getElementById('resultPanel').style.display='none';
+  // Spirit level
+  var bubble=document.getElementById('slBubble');
+  var lbl=document.getElementById('slLabel');
+  var steps=[{l:'20%',m:'Calibrating horizontal plane...'},{l:'35%',m:'Reducing tilt error...'},{l:'48%',m:'Plane locked — proceeding.'},{l:'50%',m:'✓ Spirit Level — CALIBRATED'}];
+  var si=0;
+  var sliv=setInterval(function(){
+    if(si<steps.length){bubble.style.left=steps[si].l;lbl.textContent=steps[si].m;si++;}
+    else clearInterval(sliv);
+  },600);
+  // YOLOv8 cells
+  var cells=document.querySelectorAll('.yolo-cell');
+  cells.forEach(function(c,i){setTimeout(function(){c.classList.add('active');},800+i*260);});
+  var sm=document.getElementById('scanMsg');
+  var yi=0;
+  var yiv=setInterval(function(){if(yi<yoloSeq.length){sm.textContent='Detecting: '+yoloSeq[yi]+' landmark...';yi++;}else{sm.textContent='✓ YOLOv8 — 10/10 landmarks detected';clearInterval(yiv);}},280);
+  // Cluster scan bar
+  setTimeout(function(){
+    var fill=document.getElementById('scanFill');
+    fill.style.transition='width 3.5s linear';fill.style.width='100%';
+    var cm=document.getElementById('clusterMsg');var ci=0;
+    var civ=setInterval(function(){if(ci<clusterMsgs.length){cm.textContent=clusterMsgs[ci];ci++;}else{clearInterval(civ);setTimeout(function(){document.getElementById('resultPanel').style.display='block';},300);}},580);
+  },3000);
+}
+</script>
+</body>
+</html>
